@@ -1,0 +1,36 @@
+{
+    "name": "anaseqal/laravel-asynq",
+    "description": "Laravel integration for Asynq task queue",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "AnasEqal\\LaravelAsynq\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Anas Eqal"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "laravel/framework": "^11.31",
+        "ramsey/uuid": "^4.0",
+        "google/protobuf": "^3.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0|^7.0|^8.0",
+        "phpunit/phpunit": "^9.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "AnasEqal\\LaravelAsynq\\AsynqServiceProvider"
+            ],
+            "aliases": {
+                "Asynq": "AnasEqal\\LaravelAsynq\\Facades\\Asynq"
+            }
+        }
+    }
+}

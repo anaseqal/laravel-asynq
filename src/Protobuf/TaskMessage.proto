@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option php_namespace = "AnasEqal\\LaravelAsynq\\Protobuf";
+option php_metadata_namespace = "AnasEqal\\LaravelAsynq\\Protobuf\\GPBMetadata";
+
+// TaskMessage is the internal representation of a task with additional metadata fields.
+message TaskMessage {
+  string type = 1;
+  bytes payload = 2;
+  string id = 3;
+  string queue = 4;
+  int32 retry = 5;
+  int32 retried = 6;
+  string error_msg = 7;
+  int64 last_failed_at = 11;
+  int64 timeout = 8;
+  int64 deadline = 9;
+  string unique_key = 10;
+  string group_key = 14;
+  int64 retention = 12;
+  int64 completed_at = 13;
+}
