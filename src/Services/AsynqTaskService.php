@@ -91,13 +91,16 @@ class AsynqTaskService
         );
 
         $redis = $redisClient ?: Redis::connection(config('asynq.connection', 'asynq'));
-        $taskKey = "asynq:{$queue}:t:{$taskId}";
+
+        // Use {queue} format to match Go client pattern
+        $taskKey = "asynq:{{$queue}}:t:{$taskId}";
 
         try {
             $pipe = $redis->pipeline();
 
             if ($options['uniqueKey']) {
-                $uniqueKeyLock = "asynq:{$queue}:unique:{$options['uniqueKey']}";
+                // Use {queue} format to match Go client pattern
+                $uniqueKeyLock = "asynq:{{$queue}}:unique:{$options['uniqueKey']}";
                 $pipe->set(
                     $uniqueKeyLock,
                     $taskId,
@@ -113,13 +116,16 @@ class AsynqTaskService
                     'state' => 'scheduled',
                     'score' => $processAt
                 ]);
-                $pipe->zadd("asynq:{$queue}:scheduled", $processAt, $taskId);
+                // Use {queue} format to match Go client pattern
+                $pipe->zadd("asynq:{{$queue}}:scheduled", $processAt, $taskId);
             } else {
                 $pipe->hmset($taskKey, [
                     'msg' => $msg,
-                    'state' => 'pending'
+                    'state' => 'pending',
+                    'pending_since' => $currentTime * 1000000000 // nanoseconds to match Go format
                 ]);
-                $pipe->rpush("asynq:{$queue}:pending", $taskId);
+                // Use {queue} format to match Go client pattern
+                $pipe->rpush("asynq:{{$queue}}:pending", $taskId);
             }
 
             $pipe->exec();
