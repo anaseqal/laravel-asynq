@@ -22,6 +22,7 @@ Add to your Laravel project's config/database.php under redis connections:
     'password' => env('ASYNQ_REDIS_PASSWORD', null),
     'port' => env('ASYNQ_REDIS_PORT', 6379),
     'database' => env('ASYNQ_REDIS_DB', 0),
+    'prefix' => '',
 ],
 ```
 
